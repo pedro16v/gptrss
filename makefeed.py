@@ -9,7 +9,7 @@ folder_path = "/Volumes/newshare/share/"  # Replace with the path to your folder
 rss_file_path = "/Volumes/newshare/share/rss.xml"  # Replace with the path where you want to save the RSS file
 rss_title = "Master Busa Library"
 rss_link = "http://172.16.15.9:8888/"  # Replace with your website's URL
-share_path = "/Volumes/newshare/share"
+share_path = "/Volumes/newshare/share/"
 
 allowed_extensions = ['.mkv', '.avi', '.mp4']  # Allowed file extensions
 
@@ -26,7 +26,7 @@ for root, dirs, files in os.walk(folder_path):
             
             # Encode the path to ensure that it is safe for URLs
             encoded_path = urllib.parse.quote(relative_path)
-            
+
             # Build the URL by joining the server address and encoded path
             url = urllib.parse.urljoin(rss_link, encoded_path)
 
@@ -38,7 +38,10 @@ for root, dirs, files in os.walk(folder_path):
             
             # Format the time in RFC822 format for the RSS feed
             pub_date = utc_time.strftime("%a, %d %b %Y %H:%M:%S GMT")
-            thumbnail_url = os.path.join(rss_link, f"{os.path.splitext(filename)[0]}-thumb.jpg".replace(" ", "\\ "))
+
+            path, filename = os.path.split(url)
+            name, ext = os.path.splitext(filename)
+            thumbnail_url = f"{path}/{name}-thumb.jpg"
 
             # Extract readable names
             match = re.search("^(.+)(S\d{2}E\d{2})|^(.+)(\d{4})|^(.+)(?<![\.mkv|\.avi\.mp4])", filename) 
